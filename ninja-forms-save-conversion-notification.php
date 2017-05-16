@@ -100,6 +100,8 @@ function nfsc_email_js() {
                                     subject: document.getElementById('nf-bulk-subject').value,
                                     message: document.getElementById('nf-bulk-message').value
                                 };
+                                bulkBox.setTitle('<?php _e('Sending Emails...', 'ninja-forms'); ?>');
+                                bulkBox.content[0].classList.add('loading');
                                 data = JSON.stringify( data );
                                 var payload = {
                                     action: 'nfsc_bulk_email',
@@ -110,6 +112,8 @@ function nfsc_email_js() {
                                     url: ajaxurl + '?action=nfsc_bulk_email',
                                     data: payload,
                                     success: function( response ){
+                                        bulkBox.setTitle(title);
+                                        bulkBox.content[0].classList.remove('loading');
                                         bulkBox.close();
                                     },
                                     error: function( response ){
@@ -206,6 +210,14 @@ function nfsc_email_js() {
             .nfsc-composer input.nf-field-error {
                 border: 1px solid #f00;
             }
+            .nfsc-composer .loading div {
+                display: none !important;
+            }
+            .nfsc-composer .loading {
+                background-color: rgba(208, 208, 208, 0.5);
+                border-radius: 100%;
+                animation: nf-scaleout 1.0s infinite ease-in-out; 
+            }
             .nfsc-bulk-email {
                 border: 1px solid #ccc;
                 color: #0073aa;
@@ -224,6 +236,13 @@ function nfsc_email_js() {
                 background-color: #00a0d2;
                 border-color: #008EC2;
                 color: #fff;
+            }
+            @keyframes nf-scaleout {
+                0% {
+                transform: scale(0); }
+                100% {
+                transform: scale(1);
+                opacity: 0; }
             }
         </style> 
     <?php
